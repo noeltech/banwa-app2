@@ -68,7 +68,7 @@ class PopulationMap extends React.Component {
         let barangayList = [];
         features.map(feature => {
             barangayList.push({
-                barangayName: feature.properties.BarangayNa, 
+                barangayName: feature.properties.BarangayName, 
                 population: feature.properties[populationDate]
             })
         })
@@ -162,7 +162,7 @@ class PopulationMap extends React.Component {
         this.map.on("mousemove", "iloilo_city_barangay", (e) => {
            this. map.getCanvas().style.cursor = 'pointer'
             if (e.features.length > 0) {
-                const barangayName = e.features[0].properties.BarangayNa
+                const barangayName = e.features[0].properties.BarangayName
                 
                 const propertyValue = switchPopulationDate(this.state.rangeSliderValue);
                 const populationValue = e.features[0].properties[propertyValue[2]]

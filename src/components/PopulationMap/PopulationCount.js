@@ -1,6 +1,6 @@
 import React from 'react'
 import {Card, Typography, withStyles, ListItem} from '@material-ui/core'
-
+ import CountUp from 'react-countup'
 const styles = () => ({
     countBox : {
         position: "absolute",
@@ -30,14 +30,32 @@ const PopulationCount = ({classes,year,totalPopulation}) => (
                 POPULATION :   
             </Typography>
             <Typography variant="title" className={classes.count}>
-                {(totalPopulation).toLocaleString('en')}
+                <CountUp start={200000} end={totalPopulation} delay={0}
+                    separator=","
+                    duration={.7}
+                    >
+                    {({ countUpRef }) => (
+                        <div>
+                        <span ref={countUpRef} />
+                        </div>
+                    )}
+                </CountUp>
             </Typography>
-      
+            
             <Typography variant="subheading" className={classes.withMargin}>
                 Year :   
             </Typography>
             <Typography variant="title" className={classes.count}>
-                {year}
+                <CountUp start={1960} end={year} delay={0}
+                    
+                    duration={.5}
+                    >
+                    {({ countUpRef }) => (
+                        <div>
+                        <span ref={countUpRef} />
+                        </div>
+                    )}
+                </CountUp>
             </Typography>
     </Card>
 )

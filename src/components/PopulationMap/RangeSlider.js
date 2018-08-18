@@ -15,6 +15,7 @@ const styles = (theme) => ({
     zIndex: 3,
     left:"50%",
     marginLeft:-300,
+    backgroundColor : "#3d3d3d",
     [theme.breakpoints.down("xs")]:{
       width: "100%",
       bottom: 0,
@@ -29,17 +30,28 @@ const styles = (theme) => ({
     minHeight: 30,
     [theme.breakpoints.down("xs")]:{
       minWidth : 30,
-    }
+    },
+    color: "white"
   },
   tabs : {
-    minHeight: 30
+    minHeight: 30,
+    color: "white"
   },
   slider: {
     width: "90%",
     margin : "auto",
     paddingBottom : 10,
-    paddingTop : 20
-  }
+    paddingTop : 20,
+  },
+  thumb: {
+    backgroundColor:'#fe9929'
+  },
+  track: {
+    backgroundColor:'#ec7014'
+  },
+ indicator:{
+  color: "#fe9929"
+ }
 })
 
 const  sliderValue = ['1970','1975', '1980', '1990','1995','2000','2007','2010','2015'];
@@ -54,6 +66,10 @@ const RangeSlider = (props) =>  (
                 props.onSliderChange(value)
                 props.populationSwitch(value)
               }} 
+              classes={{
+                thumb : props.classes.thumb,
+                track : props.classes.track,
+              }}
             />
             <Tabs
               className={props.classes.tabs}
@@ -62,9 +78,13 @@ const RangeSlider = (props) =>  (
                   props.onSliderChange(value)
                   props.populationSwitch(value)
               }}
-              indicatorColor="primary"
-              textColor="primary"
+              // indicatorColor="primary"
+              // textColor="primary"
               fullWidth
+              classes={{
+                indicator : props.classes.indicator,
+                
+              }}
               >
               {sliderValue.map((label, index)=>{
                 return <Tab key={index} className ={props.classes.tab} label={label} />

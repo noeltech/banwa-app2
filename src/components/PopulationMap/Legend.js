@@ -2,7 +2,7 @@ import React from 'react'
 import {Button, Typography, withStyles, List, ListItem, ListItemText,Paper} from '@material-ui/core'
 import ViewListIcon from '@material-ui/icons/ViewList';
 import ClearIcon from '@material-ui/icons/Clear'
-const legend = ['1,000 ','3,000 ','5,000 ','7,000 ','9,000 ','12,000','15,000']
+const legend = ['0    - 1,000 ','1,001 - 3,000 ','3,001 - 5,000 ','5,001 - 7,000 ','7,001 - 9,000 ','9,001 - 12,000','12-001 - 16,000']
 const color = ['#ffffd4', '#fee391', '#fec44f','#fe9929','#ec7014','#cc4c02','#8c2d04']
 
 const styles = (theme) => ({
@@ -18,6 +18,7 @@ const styles = (theme) => ({
     legendContainer : {
         padding: 8,
         flexGrow:1,
+        backgroundColor : "#3d3d3d"
         
         
     },
@@ -45,7 +46,7 @@ const Legend = (props) => (
     {props.legendVisibility &&
        
         <Paper className={props.classes.legendContainer}>
-            <Typography variant="caption">
+            <Typography variant="body1" style={{ color:'#fe9929'}}>
                 Barangay Population
             </Typography>
             <List  dense={true}>
@@ -54,7 +55,11 @@ const Legend = (props) => (
                 return  <ListItem key={index} className={props.classes.listItem}>
                                 
                                 <ListItemText 
-                                primary={list}
+                                disableTypography
+                                primary={
+                                    <Typography   style={{ color:" #f5f5f5" }}>
+                                        {list}
+                                    </Typography>}
                                 />
                                 <span style={{height:"20px" ,width:"20px", backgroundColor:color[index] }}></span>
                             </ListItem> 

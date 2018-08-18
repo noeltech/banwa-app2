@@ -21,8 +21,8 @@ class PopulationMap extends React.Component {
         lowestPopulation : lowestPopulation  ,
         year: 1970,
         totalPopulation: 209738,
-        chartVisibility: false,
-        legendVisibility: false
+        chartVisibility: true,
+        legendVisibility: true
 
 
     };   
@@ -34,16 +34,22 @@ class PopulationMap extends React.Component {
        
     }
     handleStepperNext = () => {
+        const populationDate = switchPopulationDate(this.state.rangeSliderValue + 1);
         this.setState(state => ({
             rangeSliderValue: state.rangeSliderValue + 1,
+            year:populationDate[2] , 
+            totalPopulation:populationDate[1]
         }));
         this.handleStyleChange(this.state.rangeSliderValue + 1)
         this.populationSwitch(this.state.rangeSliderValue + 1)
       };
     
     handleStepperBack = () => {
+        const populationDate = switchPopulationDate(this.state.rangeSliderValue - 1);
         this.setState(state => ({
             rangeSliderValue: state.rangeSliderValue - 1,
+            year:populationDate[2] , 
+            totalPopulation:populationDate[1]
         }));
         this.handleStyleChange(this.state.rangeSliderValue - 1)
         this.populationSwitch(this.state.rangeSliderValue -1)
@@ -122,7 +128,7 @@ class PopulationMap extends React.Component {
         if (hoveredStateId) {           
             this.map.setFeatureState({ 
                 source: "composite",
-                sourceLayer:"IloiloCityBarangay_toMapbox-c2slan", 
+                sourceLayer:"IloiloCityBarangay_toMapbox-bafzbm", 
                 id: hoveredStateId},
                  { hover: false}
                 ); 
@@ -131,7 +137,7 @@ class PopulationMap extends React.Component {
         hoveredStateId = e.features[0].id;
         this.map.setFeatureState({
             source: "composite",
-            sourceLayer:"IloiloCityBarangay_toMapbox-c2slan", 
+            sourceLayer:"IloiloCityBarangay_toMapbox-bafzbm", 
             id: hoveredStateId}, 
             { hover: true});  
     }
@@ -140,7 +146,7 @@ class PopulationMap extends React.Component {
         if (hoveredStateId) {
             this.map.setFeatureState({
                 source: "composite",
-                sourceLayer:"IloiloCityBarangay_toMapbox-c2slan", 
+                sourceLayer:"IloiloCityBarangay_toMapbox-bafzbm", 
                 id : hoveredStateId}, 
                 { hover: false}); 
         }
@@ -153,30 +159,12 @@ class PopulationMap extends React.Component {
     //     } else return true
     // }
     popupFeatureInfo(e,barangayName,populationValue,popup){
-        const itemDescription = `<p>Brgy. ${barangayName}</p>
-                                 <p>Population : ${populationValue}</p> `;
+        const itemDescription = `<h4>Brgy. ${barangayName}</h4>
+                                 <h4>Population : ${populationValue}</h4> `;
         popup.setLngLat(e.lngLat)
             .setHTML(itemDescription)
             .addTo(this.map)
     }
-
-    // toggleVisibility = (toggle) => {
-    //     switch(toggle){
-    //         case "chartVisibilty":
-    //             if(this.state.chartVisibility === false){
-    //                 this.setState({chartVisibility:true})
-    //             }else{
-    //                 this.setState({chartVisibility:false})
-    //             }    
-    //         case  "legendVisibility":
-    //             if(this.state.legendVisibility === false){
-    //                 this.setState({legendVisibility:true})
-    //             }else{
-    //                 this.setState({legendVisibility:false})
-    //             }    
-    //     }
-    // }
-
     toggleChartVisibility = () => {
         if(this.state.chartVisibility === false){
                     this.setState({chartVisibility:true})
@@ -205,7 +193,15 @@ class PopulationMap extends React.Component {
             this.setState({ legendVisibility:false})
         }
   } 
-
+  
+//   generateNumberSequence = (oldNumber, newNumber) =>  {
+//         let step
+//         if (oldNumber < newNumber){
+//             for (step = oldNumber; step <= newNumber; step++) {
+//                 this.setState({totalPopulation: step})
+//             }
+//         }
+//   }
   
 
  
@@ -257,6 +253,9 @@ class PopulationMap extends React.Component {
                popup.remove();
             
         });
+
+        this.handleWidthChange();
+        
     }   
 
     componentWillUnMount() {

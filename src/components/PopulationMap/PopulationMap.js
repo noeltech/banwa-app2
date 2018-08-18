@@ -20,7 +20,11 @@ class PopulationMap extends React.Component {
         highestPopulation : highestPopulation,
         lowestPopulation : lowestPopulation  ,
         year: 1970,
-        totalPopulation: 209738
+        totalPopulation: 209738,
+        chartVisibility: false,
+        legendVisibility: false
+
+
     };   
 
     handleSliderChange = (rangeClickValue) => {
@@ -29,6 +33,21 @@ class PopulationMap extends React.Component {
         this.handleStyleChange(rangeClickValue)
        
     }
+    handleStepperNext = () => {
+        this.setState(state => ({
+            rangeSliderValue: state.rangeSliderValue + 1,
+        }));
+        this.handleStyleChange(this.state.rangeSliderValue + 1)
+        this.populationSwitch(this.state.rangeSliderValue + 1)
+      };
+    
+    handleStepperBack = () => {
+        this.setState(state => ({
+            rangeSliderValue: state.rangeSliderValue - 1,
+        }));
+        this.handleStyleChange(this.state.rangeSliderValue - 1)
+        this.populationSwitch(this.state.rangeSliderValue -1)
+      };
 
     handleStyleChange = (value) => {
         const populationDate = switchPopulationDate(value);
@@ -100,8 +119,6 @@ class PopulationMap extends React.Component {
     }
 
      highlightFeature = (e) => {
-
-       console.log("from higllight feature : ",hoveredStateId)
         if (hoveredStateId) {           
             this.map.setFeatureState({ 
                 source: "composite",
@@ -120,7 +137,6 @@ class PopulationMap extends React.Component {
     }
 
     removeHighlight = () => {
-        console.log("from remove higllight feature : ",hoveredStateId)
         if (hoveredStateId) {
             this.map.setFeatureState({
                 source: "composite",
@@ -144,14 +160,74 @@ class PopulationMap extends React.Component {
             .addTo(this.map)
     }
 
-    
+    // toggleVisibility = (toggle) => {
+    //     switch(toggle){
+    //         case "chartVisibilty":
+    //             if(this.state.chartVisibility === false){
+    //                 this.setState({chartVisibility:true})
+    //             }else{
+    //                 this.setState({chartVisibility:false})
+    //             }    
+    //         case  "legendVisibility":
+    //             if(this.state.legendVisibility === false){
+    //                 this.setState({legendVisibility:true})
+    //             }else{
+    //                 this.setState({legendVisibility:false})
+    //             }    
+    //     }
+    // }
+
+    toggleChartVisibility = () => {
+        if(this.state.chartVisibility === false){
+                    this.setState({chartVisibility:true})
+        }else{
+            this.setState({chartVisibility:false})
+        }        
+    }
+    toggleLegendVisibility = () => {
+        if(this.state.legendVisibility === false){
+            this.setState({legendVisibility:true})
+        }else{
+            this.setState({legendVisibility:false})
+        }    
+    } 
+   
+
+   handleWidthChange = () => {
+      if(innerWidth > 960 && this.state.chartVisibility === false ){
+          this.setState({chartVisibility: true})
+        } else if(innerWidth < 960){
+            this.setState({chartVisibility: false})
+        }
+      if(innerWidth > 960 && this.state.legendVisibility === false ){
+        this.setState({ legendVisibility: true})
+        } else if(innerWidth < 960){
+            this.setState({ legendVisibility:false})
+        }
+  } 
+
+  
+
+ 
+   
+
+   correctZoom = (zoom) => {
+        if (innerWidth <=  600){
+            return 11.5
+        }else {
+            return zoom
+        }
+   }
     componentDidMount(){
+
+
         const {lng, lat,zoom } = this.state;
+        
             this.map = new mapboxgl.Map({
             container: this.mapContainer,
             style: this.state.style,
             center: [lng, lat],
-            zoom,
+            zoom: this.correctZoom(zoom)
             // attributionControl: false
         });
         const popup = new mapboxgl.Popup({
@@ -169,9 +245,10 @@ class PopulationMap extends React.Component {
                 this.highlightFeature(e);
                 this.popupFeatureInfo(e,barangayName,populationValue,popup)
             }
+            
         });
-        
-        
+
+        window.addEventListener("resize", this.handleWidthChange)   
         // When the mouse leaves the state-fill layer, update the feature state of the
         // previously hovered feature.
         this.map.on("mouseleave", "iloilo_city_barangay", ()=>{ 
@@ -182,22 +259,32 @@ class PopulationMap extends React.Component {
         });
     }   
 
+    componentWillUnMount() {
+        window.removeEventListener("resize", this.handleWidthChange);
+    }
     render(){
         return (
             <div style={{flexGrow:"1", display:"flex", position: "relative", flexDirection:"column"} }>
                 <div ref={el => this.mapContainer = el} className="webmap" style={{flexGrow:"1"}} ></div>
                 <RangeSlider
+                    handleNext={this.handleStepperNext}
+                    handleBack={this.handleStepperBack}
                     currentValue={this.state.rangeSliderValue} 
                     onSliderChange={this.handleSliderChange}
                     populationSwitch= {this.populationSwitch}
+                    
                 />
                 <ChartBox
+                    chartVisibility ={this.state.chartVisibility}
                     highChartLimit = {this.state.highestPopulation[0].population}
                     highPopulation={this.state.highestPopulation}  
                     lowPopulation={this.state.lowestPopulation}   
                     lowChartLimit = {this.state.lowestPopulation[4].population / .5 }
-                />
-                <Legend/>
+                    onClick={this.toggleChartVisibility}
+                    />
+                <Legend
+                    legendVisibility = {this.state.legendVisibility}
+                    onClick={this.toggleLegendVisibility}/>
                 <PopulationCount year={this.state.year} totalPopulation={this.state.totalPopulation}/>
             </div>
         )

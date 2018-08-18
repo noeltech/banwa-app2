@@ -8,7 +8,9 @@ const percentValue = ( x, highestPop) => `${Math.round(( x / highestPop)*100)}%`
 const styles = () => ({
     box: {
         padding: 10,
-        marginBottom : 8
+        marginBottom : 8,
+        width: 220,
+        marginRight: 5,
     },
     InsideBox : {
         display : "flex",

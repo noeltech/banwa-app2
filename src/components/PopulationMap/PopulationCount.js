@@ -4,9 +4,10 @@ import {Card, Typography, withStyles, ListItem} from '@material-ui/core'
 const styles = () => ({
     countBox : {
         position: "absolute",
-        top : 8,
-        left: "1%",
-        padding: 8
+        top : 5,
+        left: "50%",
+        marginLeft: -150,
+        padding: [10],
     },
     label : {
         display : "inline-block"  

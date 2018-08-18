@@ -2,6 +2,10 @@ import React from 'react';
 import Slider from '@material-ui/lab/Slider';
 import { withStyles,Card, Tabs,Tab, withWidth} from '@material-ui/core'
 import compose from 'recompose/compose'
+import MobileStepper from '@material-ui/core/MobileStepper';
+import Button from '@material-ui/core/Button';
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 
 const styles = (theme) => ({
   sliderContainer : {
@@ -33,7 +37,7 @@ const styles = (theme) => ({
   slider: {
     width: "90%",
     margin : "auto",
-    paddingBottom : 3,
+    paddingBottom : 10,
     paddingTop : 20
   }
 })
@@ -43,28 +47,56 @@ const  sliderValue = ['1970','1975', '1980', '1990','1995','2000','2007','2010',
 const RangeSlider = (props) =>  (
         
       <Card className={props.classes.sliderContainer}>
-          {console.log("RangerSlider Render")}
-          <Slider className={props.classes.slider} value={props.currentValue} min={0} max={8} step={1} 
-            onChange={(event,value) => {
-              props.onSliderChange(value)
-              props.populationSwitch(value)
-            }} 
-          />
-          <Tabs
-            className={props.classes.tabs}
-            value={props.currentValue}
-            onChange={(event, value) => {
+      { innerWidth > 960 ? 
+        <div>
+            <Slider className={props.classes.slider} value={props.currentValue} min={0} max={8} step={1} 
+              onChange={(event,value) => {
                 props.onSliderChange(value)
                 props.populationSwitch(value)
-            }}
-            indicatorColor="primary"
-            textColor="primary"
-            fullWidth
-            >
-            {sliderValue.map((label, index)=>{
-              return <Tab key={index} className ={props.classes.tab} label={label} />
-            })}
-          </Tabs>
+              }} 
+            />
+            <Tabs
+              className={props.classes.tabs}
+              value={props.currentValue}
+              onChange={(event, value) => {
+                  props.onSliderChange(value)
+                  props.populationSwitch(value)
+              }}
+              indicatorColor="primary"
+              textColor="primary"
+              fullWidth
+              >
+              {sliderValue.map((label, index)=>{
+                return <Tab key={index} className ={props.classes.tab} label={label} />
+              })}
+            </Tabs>
+        </div>  
+          :
+          <MobileStepper
+              variant="dots"
+              steps={8}
+              position="static"
+              activeStep={props.currentValue}
+              nextButton={
+                
+                <Button  size="small"  
+                  onClick={props.handleNext} 
+                  disabled={props.currentValue === 7}>
+                  Next
+                  <KeyboardArrowRight /> 
+                </Button> 
+              }
+              backButton={
+                <Button size="small"  
+                    disabled={props.currentValue=== 0}
+                    onClick={props.handleBack} 
+                    >
+                  <KeyboardArrowLeft /> 
+                  Back
+                </Button>
+              }
+      />
+      }
       </Card>
 )
 

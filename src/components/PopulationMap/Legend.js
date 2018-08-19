@@ -18,7 +18,7 @@ const styles = (theme) => ({
     legendContainer : {
         padding: 8,
         flexGrow:1,
-        backgroundColor : "#3d3d3d"
+        backgroundColor : theme.palette.primary.dark
         
         
     },
@@ -46,20 +46,17 @@ const Legend = (props) => (
     {props.legendVisibility &&
        
         <Paper className={props.classes.legendContainer}>
-            <Typography variant="body1" style={{ color:'#fe9929'}}>
+            <Typography variant="body1" color="textSecondary">
                 Barangay Population
             </Typography>
-            <List  dense={true}>
+            <List  dense={true} >
                 {
                 legend.map((list ,index ) => {
-                return  <ListItem key={index} className={props.classes.listItem}>
+                return  <ListItem key={index} className={props.classes.listItem} color="textSecondary">
                                 
-                                <ListItemText 
-                                disableTypography
-                                primary={
-                                    <Typography   style={{ color:" #f5f5f5" }}>
-                                        {list}
-                                    </Typography>}
+                                <ListItemText      
+                                primary={list}    
+                                 
                                 />
                                 <span style={{height:"20px" ,width:"20px", backgroundColor:color[index] }}></span>
                             </ListItem> 

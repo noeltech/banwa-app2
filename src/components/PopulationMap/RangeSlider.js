@@ -1,6 +1,6 @@
 import React from 'react';
 import Slider from '@material-ui/lab/Slider';
-import { withStyles,Card, Tabs,Tab, withWidth} from '@material-ui/core'
+import { Paper, withStyles,Card, Tabs,Tab, withWidth} from '@material-ui/core'
 import compose from 'recompose/compose'
 import MobileStepper from '@material-ui/core/MobileStepper';
 import Button from '@material-ui/core/Button';
@@ -15,7 +15,7 @@ const styles = (theme) => ({
     zIndex: 3,
     left:"50%",
     marginLeft:-300,
-    backgroundColor : "#3d3d3d",
+    backgroundColor : theme.palette.primary.dark,
     [theme.breakpoints.down("xs")]:{
       width: "100%",
       bottom: 0,
@@ -49,16 +49,26 @@ const styles = (theme) => ({
   track: {
     backgroundColor:'#ec7014'
   },
- indicator:{
-  color: "#fe9929"
- }
+  dot: {
+    backgroundColor: theme.palette.primary.light,
+    borderRadius: '50%',
+    width: 10,
+    height: 10,
+    margin: '0 4px',
+  },
+  /* Styles applied to a dot if `variant="dots"` and this is the active step. */
+  dotActive: {
+    backgroundColor: theme.palette.secondary.main,
+  },
+ 
 })
 
 const  sliderValue = ['1970','1975', '1980', '1990','1995','2000','2007','2010','2015'];
 
 const RangeSlider = (props) =>  (
         
-      <Card className={props.classes.sliderContainer}>
+      <Paper className={props.classes.sliderContainer}
+      >
       { innerWidth > 960 ? 
         <div>
             <Slider className={props.classes.slider} value={props.currentValue} min={0} max={8} step={1} 
@@ -81,10 +91,7 @@ const RangeSlider = (props) =>  (
               // indicatorColor="primary"
               // textColor="primary"
               fullWidth
-              classes={{
-                indicator : props.classes.indicator,
-                
-              }}
+              
               >
               {sliderValue.map((label, index)=>{
                 return <Tab key={index} className ={props.classes.tab} label={label} />
@@ -94,14 +101,18 @@ const RangeSlider = (props) =>  (
           :
           <MobileStepper
               variant="dots"
-              steps={8}
+              steps={9}
               position="static"
               activeStep={props.currentValue}
+              classes={{
+                dot : props.classes.dot,
+                dotActive : props.classes.dotActive,
+              }}
               nextButton={
                 
                 <Button  size="small"  
                   onClick={props.handleNext} 
-                  disabled={props.currentValue === 7}>
+                  disabled={props.currentValue === 8}>
                   Next
                   <KeyboardArrowRight /> 
                 </Button> 
@@ -117,7 +128,7 @@ const RangeSlider = (props) =>  (
               }
       />
       }
-      </Card>
+      </Paper>
 )
 
 

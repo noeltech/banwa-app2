@@ -25,13 +25,11 @@ export default withStyles(styles)(props =>
             className={props.classes.box}
             variant = "dense"
           >
-            <Typography variant="subheading" color="inherit" >
-              Banwa
-            </Typography>
+            
             <Typography noWrap variant="title" color="inherit" className={props.classes.title}>
               Iloilo City Population History
             </Typography>
-            <Button color="inherit">Maps</Button>
+          
           </Toolbar>
         </AppBar>
 )

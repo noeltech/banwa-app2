@@ -1,13 +1,14 @@
 import React from 'react'
 import {Card, Typography, withStyles, ListItem} from '@material-ui/core'
  import CountUp from 'react-countup'
-const styles = () => ({
+const styles = (theme) => ({
     countBox : {
         position: "absolute",
         top : 5,
         left: "50%",
         marginLeft: -150,
         padding: [10],
+        backgroundColor: theme.palette.primary.dark
     },
     label : {
         display : "inline-block"  
@@ -25,11 +26,11 @@ const styles = () => ({
 })
 
 const PopulationCount = ({classes,year,totalPopulation}) => (
-    <Card className={classes.countBox}>
-            <Typography variant="subheading" className={classes.label}>
+    <Card className={classes.countBox} >
+            <Typography variant="subheading" className={classes.label} color="textSecondary">
                 POPULATION :   
             </Typography>
-            <Typography variant="title" className={classes.count}>
+            <Typography variant="title" className={classes.count} color="secondary">
                 <CountUp start={200000} end={totalPopulation} delay={0}
                     separator=","
                     duration={.7}
@@ -42,10 +43,10 @@ const PopulationCount = ({classes,year,totalPopulation}) => (
                 </CountUp>
             </Typography>
             
-            <Typography variant="subheading" className={classes.withMargin}>
+            <Typography variant="subheading" className={classes.withMargin} color="textSecondary">
                 Year :   
             </Typography>
-            <Typography variant="title" className={classes.count}>
+            <Typography variant="title" className={classes.count} color="secondary">
                 <CountUp start={1960} end={year} delay={0}
                     
                     duration={.5}

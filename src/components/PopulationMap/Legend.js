@@ -52,7 +52,7 @@ const Legend = (props) => (
             <List  dense={true} >
                 {
                 legend.map((list ,index ) => {
-                return  <ListItem key={index} className={props.classes.listItem} color="textSecondary">
+                return  <ListItem key={index} className={props.classes.listItem} >
                                 
                                 <ListItemText      
                                 primary={list}    

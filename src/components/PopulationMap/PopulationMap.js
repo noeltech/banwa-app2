@@ -58,7 +58,7 @@ class PopulationMap extends React.Component {
     handleStyleChange = (value) => {
         const populationDate = switchPopulationDate(value);
              const map = this.map;
-             map.setPaintProperty('iloilo_city_barangay','fill-color',[
+             map.setPaintProperty('iloilo_city_barangay_3d','fill-extrusion-color',[
                 "interpolate",
                 [
                     "linear"
@@ -86,10 +86,34 @@ class PopulationMap extends React.Component {
                 13000,
                 "hsl(19, 89%, 21%)"
             ])
+            map.setPaintProperty('iloilo_city_barangay_3d','fill-extrusion-height',[
+                "interpolate",
+                [
+                    "linear"
+                ],
+                [
+                    "get",
+                    populationDate[0]
+                ],
+                1000,
+                    100,
+                    3000,
+                    300,
+                    5000,
+                    500,
+                    7000,
+                    700,
+                    9000,
+                    900,
+                    12000,
+                    1200,
+                    15000,
+                    1500
+            ])
     }
 
     getBarangaylist = (populationDate) => {
-        const features = this.map.queryRenderedFeatures({ layers: ['iloilo_city_barangay'] });
+        const features = this.map.queryRenderedFeatures({ layers: ['iloilo_city_barangay_3d'] });
         let barangayList = [];
         features.map(feature => {
             barangayList.push({
@@ -231,7 +255,7 @@ class PopulationMap extends React.Component {
             closeOnClick: false
         });
 
-        this.map.on("mousemove", "iloilo_city_barangay", (e) => {
+        this.map.on("mousemove", "iloilo_city_barangay_3d", (e) => {
            this. map.getCanvas().style.cursor = 'pointer'
             if (e.features.length > 0) {
                 const barangayName = e.features[0].properties.BarangayName
@@ -247,7 +271,7 @@ class PopulationMap extends React.Component {
         window.addEventListener("resize", this.handleWidthChange)   
         // When the mouse leaves the state-fill layer, update the feature state of the
         // previously hovered feature.
-        this.map.on("mouseleave", "iloilo_city_barangay", ()=>{ 
+        this.map.on("mouseleave", "iloilo_city_barangay_3d", ()=>{ 
             this. map.getCanvas().style.cursor = ''
                this.removeHighlight()
                popup.remove();

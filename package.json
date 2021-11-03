@@ -43,7 +43,7 @@
     "style-loader": "0.18.2",
     "typeface-roboto": "^0.0.54",
     "uuid": "3.1.0",
-    "validator": "8.0.0",
+    "validator": "13.7.0",
     "victory": "^0.27.2",
     "webpack": "3.1.0"
   },
